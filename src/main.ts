@@ -3,9 +3,6 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  app.setGlobalPrefix('api');
-
   const allowOrigin = ['http://localhost:3001', 'http://localhost:3000', 'https://final-project-fe-muhammad-irfan-dza.vercel.app, https://a-we-rent-fe.vercel.app/product', '*'];
 
   app.enableCors({
