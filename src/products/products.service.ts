@@ -1,21 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { CreateReviewDto } from './dto/create-review.dto';
 
 @Injectable()
 export class ProductsService {
   constructor(private prisma: PrismaService) {}
-
-  // Create product
-  async create(createProductDto: CreateProductDto) {
-    return await this.prisma.products.create({
-      data: {
-        title: createProductDto.title,
-        image_url: createProductDto.image_url,
-      },
-    });
-  }
 
   // Get all products with reviews
   async findAll() {
@@ -42,14 +31,32 @@ export class ProductsService {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
 
-    return product;
+    return {
+      id: 1,
+      title: product.title,
+      image: product.image_url,
+      review: product.reviews[0],
+      total: product.reviews.length,
+    };
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
-  }
+  async createReview(productId: number, createReviewDto: CreateReviewDto) {
+    // Check if product exists
+    const product = await this.prisma.products.findUnique({
+      where: { id: productId },
+    });
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+    if (!product) {
+      throw new NotFoundException(`Product with ID ${productId} not found`);
+    }
+
+    // Create the review
+    return this.prisma.reviews.create({
+      data: {
+        product_id: productId,
+        reviewer_name: createReviewDto.reviewer_name,
+        review_text: createReviewDto.review_text,
+      },
+    });
   }
 }
