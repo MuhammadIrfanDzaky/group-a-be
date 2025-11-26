@@ -226,16 +226,6 @@ group-a-be/
 - `npm run test:cov` - Run tests with coverage
 - `npm run test:e2e` - Run end-to-end tests
 
-## CORS Configuration
-
-The application is configured to accept requests from:
-- `http://localhost:3001`
-- `http://localhost:3000`
-- `https://final-project-fe-muhammad-irfan-dza.vercel.app`
-- `https://a-we-rent-fe.vercel.app/product`
-
-Allowed methods: `GET`, `POST`
-
 ## Support
 
 For questions or issues, please open an issue in the repository.
